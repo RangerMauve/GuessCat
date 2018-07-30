@@ -1,0 +1,125 @@
+<title>Guess Cat!</title>
+<style>
+	main, body, html {
+		display: flex;
+		flex-direction: column;
+		padding: 0px;
+		margin: 0px;
+		flex: 1;
+		overflow: hidden;
+	}
+	.gc-hidden {
+		display: none;
+	}
+	.gc-cards {
+		flex: 1;
+		display: grid;
+		grid-template-columns: auto auto auto;
+	}
+	.gc-card-container {
+		position: relative;
+		display: flex;
+
+		perspective: 1000px;
+	}
+	.gc-card {
+		border: none;
+		display: block;
+
+		flex: 1;
+		align-self: stretch;
+
+		position: relative;
+
+		transition: 0.2s;
+		transform-style: preserve-3d;
+	}
+	.gc-card-flipped {
+		transform: rotateY(180deg);
+	}
+	.gc-card-side {
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		top: 0px;
+		bottom: 0px;
+
+		transform: rotateY(180deg);
+	}
+	.gc-card-front {
+		z-index: 2;
+		
+		background-position: center center;
+		background-size: cover;
+		background-repeat: no-repeat;
+
+		transform: rotateY(0deg);
+	}
+	.gc-card-back {
+		transform: rotateY(180deg);
+		background: #A55FA6;
+		color: white;
+		font-size: 10vmin;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
+<main>
+	<section id="cards" class="gc-cards"></section>
+</main>
+<script>
+	const CARDS = [
+		{
+			description: "Grey cat, white ears, blue hat",
+			url: "http://placekitten.com/200/300"
+		},
+		{
+			description: "White cat, green hat",
+			url: "http://placekitten.com/200/200"
+		},
+		{
+			description: "Black cat, open mouth",
+			url: "http://placekitten.com/400/300"
+		},
+	];
+
+	CARDS.push.apply(CARDS, CARDS.slice().reverse().concat(CARDS));
+
+	makeCards(CARDS);
+
+	function makeCards(cards) {
+		var container = document.getElementById("cards");
+
+		var contents = cards.map(makeCard).join("\n");
+
+		container.innerHTML = contents;
+	}
+
+	function toggleCard(index) {
+		var card = document.getElementById(`card-${index}`);
+
+		card.classList.toggle("gc-card-flipped");
+	}
+
+	function makeCard(card, index) {
+		return `
+			<div class="gc-card-container" >
+				<div
+					id="card-${index}"
+					class="gc-card"
+					onclick="toggleCard(${index})"
+					aria-label="${card.description}"
+				>
+					<div
+						class="gc-card-side gc-card-front"
+						style="background-image: url(${card.url})"
+					></div>
+					<div class="gc-card-side gc-card-back">
+						❔
+					</div>
+				</div>
+			</div>
+		`
+	}
+</script>
