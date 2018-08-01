@@ -1,4 +1,4 @@
-<title>😸 Guess Mew 😸</title>
+<title>Guess Mew 😸❓</title>
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -16,7 +16,7 @@
 		overflow: hidden;
 	}
 	main {
-		font-size: 5em;
+		font-size: 10vmin;
 		background: #a514ed;
 	}
 	* {
@@ -62,12 +62,14 @@
 		transition: 0.2s;
 		transform-style: preserve-3d;
 	}
+	/*
 	.gc-card:focus .gc-card-front {
 		filter: hue-rotate(90deg);
 	}
 	.gc-card:focus .gc-card-back {
 		border: orange dotted 2.5vmin;
 	}
+	*/
 	.gc-card-flipped {
 		transform: rotateY(180deg);
 	}
@@ -108,14 +110,18 @@
 		border: none;
 		transform: none;
 		transition: 0.1s;
-		text-shadow: 0 0 0 rgba(0,0,0,0);
+		/* text-shadow: 0 0 0 rgba(0,0,0,0); */
 	}
-	.gc-button:focus {
+	/* .gc-button:focus {
 		outline: none;
 		text-shadow: 1vmin 1vmin 1vmin rgba(0,0,0,0.5);
 	}
 	.gc-button:active {
 		text-shadow: 1.25vmin 1.25vmin 1.25vmin rgba(0,0,0,0.45);
+	} */
+
+	.gc-button:focus {
+		opacity: 0.6;
 	}
 	.gc-controls {
 		display: flex;
