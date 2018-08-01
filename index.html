@@ -1,4 +1,10 @@
-<title>Guess Cat!</title>
+<title>😸 Guess Mew 😸</title>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="./manifest.json">
 <style>
 	@import url("./animate.css");
 	main, body, html {
@@ -127,6 +133,10 @@
 	<section id="yourcard" class="gc-yourcard gc-hidden"></section>
 </main>
 <script>
+	// Hack to hide title bar
+
+	window.scrollTo(0, 1);
+
 	const CARDS = [];
 	
 	let toGenerate = 3 * 4;
