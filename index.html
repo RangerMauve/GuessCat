@@ -1,5 +1,6 @@
 <title>Guess Cat!</title>
 <style>
+	@import url("./animate.css");
 	main, body, html {
 		display: flex;
 		flex-direction: column;
@@ -8,6 +9,13 @@
 		flex: 1;
 		overflow: hidden;
 	}
+	main {
+		font-size: 5em;
+		background: #a514ed;
+	}
+	* {
+		box-sizing: border-box;
+	}
 	.gc-hidden {
 		display: none;
 	}
@@ -15,16 +23,30 @@
 		flex: 1;
 		display: grid;
 		grid-template-columns: auto auto auto;
+		grid-column-gap: 5vmin;
+		grid-row-gap: 2.5vmin;
+		padding: 5vmin;
 	}
+
+	@media (orientation: landscape) {
+		.gc-cards {
+			grid-template-columns: auto auto auto auto;
+		}
+	}
+
 	.gc-card-container {
 		position: relative;
 		display: flex;
 
 		perspective: 1000px;
+
+		border-radius: 2.5vmin;
+		overflow: hidden;
 	}
 	.gc-card {
 		border: none;
 		display: block;
+		background: orangered;
 
 		flex: 1;
 		align-self: stretch;
@@ -33,6 +55,12 @@
 
 		transition: 0.2s;
 		transform-style: preserve-3d;
+	}
+	.gc-card:focus .gc-card-front {
+		filter: hue-rotate(90deg);
+	}
+	.gc-card:focus .gc-card-back {
+		border: orange dotted 2.5vmin;
 	}
 	.gc-card-flipped {
 		transform: rotateY(180deg);
@@ -53,62 +81,95 @@
 		background-size: cover;
 		background-repeat: no-repeat;
 
+		border-radius: 2.5vmin;
+
 		transform: rotateY(0deg);
 	}
 	.gc-card-back {
 		transform: rotateY(180deg);
-		background: #A55FA6;
+		background: orangered;
 		color: white;
+		border: orange dashed 2.5vmin;
 		font-size: 10vmin;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		transition: 0.1s;
+	}
+	.gc-button {
+		font-size: inherit;
+		background: none;
+		border: none;
+		transform: none;
+		transition: 0.1s;
+		text-shadow: 0 0 0 rgba(0,0,0,0);
+	}
+	.gc-button:focus {
+		outline: none;
+		text-shadow: 1vmin 1vmin 1vmin rgba(0,0,0,0.5);
+	}
+	.gc-button:active {
+		text-shadow: 1.25vmin 1.25vmin 1.25vmin rgba(0,0,0,0.45);
+	}
+	.gc-controls {
+		display: flex;
+		justify-content: space-around;
+		padding: 2.5vmin;
+		padding-top: 0px;
 	}
 </style>
 <main>
 	<section id="cards" class="gc-cards"></section>
+	<section id="controls" class="gc-controls">
+		<button onclick="clearCards()" class="gc-button animated bounceInRight">💣</button>
+		<button class="gc-button animated bounceInLeft">🐱</button>
+	</section>
+	<section id="yourcard" class="gc-yourcard gc-hidden"></section>
 </main>
 <script>
-	const CARDS = [
-		{
-			description: "Grey cat, white ears, blue hat",
-			url: "http://placekitten.com/200/300"
-		},
-		{
-			description: "White cat, green hat",
-			url: "http://placekitten.com/200/200"
-		},
-		{
-			description: "Black cat, open mouth",
-			url: "http://placekitten.com/400/300"
-		},
-	];
-
-	CARDS.push.apply(CARDS, CARDS.slice().reverse().concat(CARDS));
+	const CARDS = [];
+	
+	let toGenerate = 3 * 4;
+	while(toGenerate--) {
+		let width = (Math.round(Math.random() * 5) + 1) * 100;
+		let height = (Math.round(Math.random() * 5) + 1) * 100;
+		CARDS.push({
+			description: "Something preset?",
+			url: `http://placekitten.com/${width}/${height}`
+		});
+	}
 
 	makeCards(CARDS);
 
 	function makeCards(cards) {
-		var container = document.getElementById("cards");
+		const container = document.getElementById("cards");
 
-		var contents = cards.map(makeCard).join("\n");
+		const contents = cards.map(makeCard).join("\n");
 
 		container.innerHTML = contents;
 	}
 
-	function toggleCard(index) {
-		var card = document.getElementById(`card-${index}`);
+	function flipCard(index) {
+		const card = document.getElementById(`card-${index}`);
 
-		card.classList.toggle("gc-card-flipped");
+		card.classList.add("gc-card-flipped");
+	}
+
+	function clearCards() {
+		const cards = document.querySelectorAll(".gc-card-flipped");
+
+		for(let card of cards) {
+			card.classList.remove("gc-card-flipped");
+		}
 	}
 
 	function makeCard(card, index) {
 		return `
-			<div class="gc-card-container" >
-				<div
+			<div class="gc-card-container  animated jackInTheBox" >
+				<button
 					id="card-${index}"
 					class="gc-card"
-					onclick="toggleCard(${index})"
+					onclick="flipCard(${index})"
 					aria-label="${card.description}"
 				>
 					<div
@@ -116,9 +177,9 @@
 						style="background-image: url(${card.url})"
 					></div>
 					<div class="gc-card-side gc-card-back">
-						❔
+						?
 					</div>
-				</div>
+				</button>
 			</div>
 		`
 	}
